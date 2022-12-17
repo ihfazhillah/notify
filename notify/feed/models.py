@@ -33,3 +33,6 @@ class ItemAccess(TimeStampedModel):
     user = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE
     )
+    item = models.ForeignKey(
+        Item, on_delete=models.CASCADE
+    )
