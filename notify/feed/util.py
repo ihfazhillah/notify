@@ -1,3 +1,5 @@
+import datetime
+
 from notify.feed.models import Tag, Item
 import feedparser
 
@@ -18,7 +20,8 @@ def parse(tag: Tag):
             guid=entry.guid,
             defaults={
                 "title": entry.title,
-                "content": entry.summary
+                "content": entry.summary,
+                "published": datetime.datetime(*entry.published_parsed[:7])
             }
         )
 

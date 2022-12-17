@@ -12,7 +12,7 @@ admin.site.register(Tag, TagAdmin)
 
 
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ["tags", "guid", "title", "description"]
+    list_display = ["guid", "title", "content"]
 
 
 admin.site.register(Item, ItemAdmin)
