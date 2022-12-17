@@ -11,6 +11,9 @@ class Tag(TimeStampedModel):
     # we use text field here, because the upwork text need more than 255 length
     url = models.TextField()
 
+    def __str__(self):
+        return self.title
+
 
 class Item(TimeStampedModel):
     tags = models.ManyToManyField(Tag, related_name="items")
