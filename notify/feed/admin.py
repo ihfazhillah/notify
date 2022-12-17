@@ -1,5 +1,6 @@
 from django.contrib import admin
-from notify.feed.models import Tag, Item
+from notify.feed.models import Tag, Item, ItemAccess
+
 
 # Register your models here.
 
@@ -16,3 +17,10 @@ class ItemAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Item, ItemAdmin)
+
+
+class ItemAccessAdmin(admin.ModelAdmin):
+    list_display = ["user", "created"]
+
+
+admin.site.register(ItemAccess, ItemAccessAdmin)
