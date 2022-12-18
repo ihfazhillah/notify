@@ -24,7 +24,7 @@ def parse_feeds():
                     "guid": item.guid,
                     "tags": ", ".join([tag.title for tag in item.tags.all()])
                 },
-                topic="job alert",
+                topic="job_alert",
                 notification=Notification(
                     title=item.title, body=f"New job alert: {item.title}"
                 )
