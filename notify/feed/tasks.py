@@ -33,4 +33,4 @@ def parse_feeds():
         ]
 
         for message in messages:
-            FCMDevice.objects.send_message(message)
+            FCMDevice.objects.all().send_message(message)
