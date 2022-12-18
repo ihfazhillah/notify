@@ -22,7 +22,7 @@ def parse_feeds():
                     "content": item.content,
                     "published": str(item.published),
                     "guid": item.guid,
-                    "tags": [tag.title for tag in item.tags.all()]
+                    "tags": ", ".join([tag.title for tag in item.tags.all()])
                 },
                 topic="job alert",
                 notification=Notification(
