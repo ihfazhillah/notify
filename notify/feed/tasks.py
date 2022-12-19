@@ -19,14 +19,10 @@ def parse_feeds():
             Message(
                 data={
                     "title": item.title,
-                    "content": item.content,
-                    "published": str(item.published),
                     "guid": item.guid,
-                    "tags": ", ".join([tag.title for tag in item.tags.all()])
-                },
-                notification=Notification(
-                    title=item.title, body=f"New job alert: {item.title}"
-                )
+                    "tags": ", ".join([tag.title for tag in item.tags.all()]),
+                    "id": item.pk
+                }
             )
             for item in new_items
         ]
