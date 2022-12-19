@@ -14,7 +14,7 @@ class ItemViewSet(ReadOnlyModelViewSet):
     serializer_class = ItemSerializer
 
     def get_queryset(self):
-        qs = super().get_queryset()
+        qs = super().get_queryset().order_by("-created")
         qs = qs.annotate(
             access_count=models.Count("itemaccess", filter=models.Q(itemaccess__user=self.request.user)),
             accessed=models.Case(
