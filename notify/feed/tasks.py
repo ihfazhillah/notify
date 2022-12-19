@@ -21,7 +21,7 @@ def parse_feeds():
                     "title": item.title,
                     "guid": item.guid,
                     "tags": ", ".join([tag.title for tag in item.tags.all()]),
-                    "id": item.pk
+                    "id": str(item.pk)
                 }
             )
             for item in new_items
