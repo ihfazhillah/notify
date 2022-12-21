@@ -54,4 +54,9 @@ def parse_upwork_feed(raw):
     min_start = min(starts)
     result["description"] = raw[:min_start].strip().replace("\n\n", "\n")
 
+    # split skills
+    skills = result.get("skills")
+    if skills:
+        result["skills"] = [skill.strip() for skill in skills.split(",")]
+
     return result
