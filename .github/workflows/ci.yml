@@ -83,23 +83,23 @@
 
 #name: Django Deployment
 #
-#
-#on:
-#  push:
-#    branches: [main]
-#  pull_request:
-#    branches: [main]
-#
-#jobs:
-#  deploy:
-#    runs-on: "ubuntu-22.04"
-#    steps:
-#      - name: Executing remote command
-#        uses: appleboy/ssh-action@master
-#        with:
-#          host: ${{ secrets.HOST }}
-#          username: ${{ secrets.USERNAME }}
-#          port: 22
-#          password: ${{ secrets.PASSWORD }}
-#          script: bash /home/ihfazh/deploy-notify.sh
-#          debug: true
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: "ubuntu-22.04"
+    steps:
+      - name: Executing remote command
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: 22
+          key: ${{ secrets.PASSWORD }}
+          script: bash /home/ihfazh/deploy_notify.sh
+          debug: true
