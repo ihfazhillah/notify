@@ -1,4 +1,6 @@
 import datetime
+import html
+import re
 
 from notify.feed.models import Tag, Item
 import feedparser
@@ -32,3 +34,24 @@ def parse(tag: Tag):
             new_entries.append(item)
 
     return new_entries
+
+
+def parse_upwork_feed(raw):
+    # change br to new lines
+    result = {}
+
+    raw = raw.replace("<br />", "\n").replace("\n\n", "\n")
+    raw = html.unescape(raw)
+    key_val_pattern = re.compile("((<b>(?P<key>.*?)</b>):(?P<value>.*?\n))")
+
+    starts = []
+    for match in re.finditer(key_val_pattern, raw):
+        starts.append(match.start())
+
+        group = match.groupdict()
+        result[group['key'].lower().replace(" ", "_")] = group["value"].strip()
+
+    min_start = min(starts)
+    result["description"] = raw[:min_start].strip().replace("\n\n", "\n")
+
+    return result
