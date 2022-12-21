@@ -6,12 +6,16 @@ from fcm_django.models import FCMDevice
 from firebase_admin.messaging import Message, Notification
 
 from config import celery_app
-from notify.feed.models import Tag, UpworkItemCategory, UpworkSkill, UpworkItem, ProposalExample
+from notify.feed.models import Tag, UpworkItemCategory, UpworkSkill, UpworkItem, ProposalExample, Item
 from notify.feed.util import parse, parse_upwork_feed
 
 
 @celery_app.task()
 def notify_firebase(new_items):
+    new_items = [
+        Item.objects.get(pk=pk)
+        for pk in new_items
+    ]
     messages = [
         Message(
             data={
@@ -30,6 +34,10 @@ def notify_firebase(new_items):
 
 @celery_app.task()
 def parse_items(new_items):
+    new_items = [
+        Item.objects.get(pk=pk)
+        for pk in new_items
+    ]
     for item in new_items:
         parsed = parse_upwork_feed(item.content)
 
@@ -79,12 +87,16 @@ def parse_tags():
     for tag in Tag.objects.all():
         new_items += parse(tag)
 
-    return new_items
+    return [item.id for item in new_items]
 
 
 @celery_app.task()
 def generate_proposal_example(new_items):
     openai.api_key = settings.OPENAI_API_KEY
+    new_items = [
+        Item.objects.get(pk=pk)
+        for pk in new_items
+    ]
     for item in new_items:
         parsed = parse_upwork_feed(item.content)
 
