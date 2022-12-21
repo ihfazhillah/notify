@@ -1,10 +1,12 @@
 import datetime
 
+import openai
+from django.conf import settings
 from fcm_django.models import FCMDevice
 from firebase_admin.messaging import Message, Notification
 
 from config import celery_app
-from notify.feed.models import Tag, UpworkItemCategory, UpworkSkill, UpworkItem
+from notify.feed.models import Tag, UpworkItemCategory, UpworkSkill, UpworkItem, ProposalExample
 from notify.feed.util import parse, parse_upwork_feed
 
 
@@ -81,9 +83,30 @@ def parse_tags():
 
 
 @celery_app.task()
+def generate_proposal_example(new_items):
+    openai.api_key = settings.OPENAI_API_KEY
+    for item in new_items:
+        parsed = parse_upwork_feed(item.content)
+
+        response = openai.Completion.create(
+            model="text-davinci-003",
+            prompt=f"example of upwork proposal for this job description including ask question about job description to show curiosity about project and client, portofolio or project examples  and cta\n{parsed.get('description', '')}",
+            temperature=0.7,
+            max_tokens=1673,
+            top_p=1,
+            frequency_penalty=0,
+            presence_penalty=0
+        )
+
+        ProposalExample.objects.create(item=item, text=response.choices[0].text)
+
+
+
+@celery_app.task()
 def parse_feeds():
     parsing = parse_tags.s()
     parsing.link(notify_firebase.s())
     parsing.link(parse_items.s())
+    parsing.link(generate_proposal_example.s())
     parsing.delay()
 

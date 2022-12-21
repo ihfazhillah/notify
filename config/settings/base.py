@@ -361,3 +361,5 @@ FCM_DJANGO_SETTINGS = {
     # default: False
     "UPDATE_ON_DUPLICATE_REG_ID": True,
 }
+
+OPENAI_API_KEY = env.str("OPENAI_API_KEY")

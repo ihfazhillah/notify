@@ -62,3 +62,8 @@ class UpworkItem(TimeStampedModel):
     category = models.ForeignKey(UpworkItemCategory, on_delete=models.CASCADE, related_name="items")
     country = models.CharField(max_length=255)
     skills = models.ManyToManyField(UpworkSkill)
+
+
+class ProposalExample(TimeStampedModel):
+    text = models.TextField()
+    item = models.OneToOneField(Item, related_name="proposal_example", on_delete=models.CASCADE)

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from notify.feed.models import Tag, Item, ItemAccess, UpworkSkill, UpworkItemCategory, UpworkItem
+from notify.feed.models import Tag, Item, ItemAccess, UpworkSkill, UpworkItemCategory, UpworkItem, ProposalExample
 
 
 # Register your models here.
@@ -42,3 +42,12 @@ class UpworkFeedItem(admin.ModelAdmin):
     list_display = ["description", "budget", "hourly_range"]
 
 admin.site.register(UpworkItem, UpworkFeedItem)
+
+
+class UpworkProposalAdmin(admin.ModelAdmin):
+    list_display = ["item", "text"]
+
+
+
+
+admin.site.register(ProposalExample, UpworkProposalAdmin)
