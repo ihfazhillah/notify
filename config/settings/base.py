@@ -4,7 +4,7 @@ Base settings to build other settings files upon.
 from pathlib import Path
 
 import environ
-from firebase_admin import initialize_app
+from firebase_admin import initialize_app, get_app
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # notify/
@@ -338,7 +338,10 @@ SPECTACULAR_SETTINGS = {
 # Your stuff...
 # ------------------------------------------------------------------------------
 
-FIREBASE_APP = initialize_app()
+try:
+    FIREBASE_APP = get_app()
+except:
+    FIREBASE_APP = initialize_app()
 # To learn more, visit the docs here:
 # https://cloud.google.com/docs/authentication/getting-started>
 
