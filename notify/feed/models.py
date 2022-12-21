@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.postgres.fields import RangeField, IntegerRangeField, DecimalRangeField
 from django.db import models
 from model_utils.models import TimeStampedModel
 
@@ -36,3 +37,28 @@ class ItemAccess(TimeStampedModel):
     item = models.ForeignKey(
         Item, on_delete=models.CASCADE
     )
+
+
+class UpworkSkill(TimeStampedModel):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
+class UpworkItemCategory(TimeStampedModel):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
+class UpworkItem(TimeStampedModel):
+    item = models.OneToOneField(Item, related_name="upwork", on_delete=models.CASCADE)
+    description = models.TextField()
+    budget = models.IntegerField(null=True, blank=True)
+    hourly_range = DecimalRangeField(null=True, blank=True)
+    posted_on = models.DateTimeField()
+    category = models.ForeignKey(UpworkItemCategory, on_delete=models.CASCADE, related_name="items")
+    country = models.CharField(max_length=255)
+    skills = models.ManyToManyField(UpworkSkill)
