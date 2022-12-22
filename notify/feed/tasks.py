@@ -102,9 +102,9 @@ def generate_proposal_example(new_items):
 
         response = openai.Completion.create(
             model="text-davinci-003",
-            prompt=f"write 3 upwork job proposal, highlight curiosity and interest for that job, highlight past experience and portofolio, then the CTA in the last.\n{parsed.get('description', '')}",
+            prompt=f"write upwork job proposal, highlight curiosity and interest for that job, highlight past experience and portofolio, then the CTA in the last.\n{parsed.get('description', '')}",
             temperature=0.7,
-            max_tokens=400,
+            max_tokens=4000,
             top_p=1,
             frequency_penalty=0,
             presence_penalty=0
