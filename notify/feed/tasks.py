@@ -63,6 +63,9 @@ def parse_items(new_items):
                 hourly_range.split("-")
             ]
 
+        if len(hourly_range == 1):
+            hourly_range = [hourly_range[0], None]
+
         posted_on = parsed.get("posted_on")
         fmt = "%B %d, %Y %H:%M %Z"
         posted_on_parsed = datetime.datetime.strptime(posted_on, fmt)
