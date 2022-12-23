@@ -58,9 +58,9 @@ class UpworkItem(TimeStampedModel):
     description = models.TextField()
     budget = models.IntegerField(null=True, blank=True)
     hourly_range = DecimalRangeField(null=True, blank=True)
-    posted_on = models.DateTimeField()
+    posted_on = models.DateTimeField(blank=True, null=True)
     category = models.ForeignKey(UpworkItemCategory, on_delete=models.CASCADE, related_name="items")
-    country = models.CharField(max_length=255)
+    country = models.CharField(max_length=255, blank=True, null=True)
     skills = models.ManyToManyField(UpworkSkill)
 
 
