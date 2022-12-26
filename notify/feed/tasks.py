@@ -125,6 +125,6 @@ def parse_feeds():
     parsing = parse_tags.s()
     parsing.link(notify_firebase.s())
     parsing.link(parse_items.s())
-    parsing.link(generate_proposal_example.s())
+    # parsing.link(generate_proposal_example.s())
     parsing.delay()
 
