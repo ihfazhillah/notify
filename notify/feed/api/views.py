@@ -51,7 +51,7 @@ class ItemViewSet(ReadOnlyModelViewSet):
         instance = self.get_object()
         proposal = generate_proposal(pk, self.request.user.id)
         ProposalExample.objects.update_or_create(
-            instance=instance, defaults={"text": proposal}
+            item=instance, defaults={"text": proposal}
         )
         return Response({"proposal": proposal})
 
