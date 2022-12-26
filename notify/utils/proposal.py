@@ -25,7 +25,7 @@ def generate_proposal(item_id: int, user_id: int) -> str:
     else:
         prompt = default_prompt
 
-    prompt += item.upwork.description
+    prompt += f"[{item.upwork.description}]"
 
     max_tokens = 4097 - (len(prompt) + 3)
 
