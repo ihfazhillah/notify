@@ -7,7 +7,8 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from notify.feed.api.serializers import ItemSerializer, SimpleItemSerializer
-from notify.feed.models import Item, ItemAccess
+from notify.feed.models import Item, ItemAccess, ProposalExample
+from notify.utils.proposal import generate_proposal
 
 
 class ItemViewSet(ReadOnlyModelViewSet):
@@ -44,3 +45,13 @@ class ItemViewSet(ReadOnlyModelViewSet):
         instance = self.get_object()
         ItemAccess.objects.get_or_create(item=instance, user=self.request.user)
         return Response({"ok": True})
+
+    @action(detail=True, methods=["POST"])
+    def generate_proposal(self, request, pk):
+        instance = self.get_object()
+        proposal = generate_proposal(pk, self.request.user.id)
+        ProposalExample.objects.update_or_create(
+            instance=instance, defaults={"text": proposal}
+        )
+        return Response({"proposal": proposal})
+
