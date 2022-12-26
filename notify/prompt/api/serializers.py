@@ -12,3 +12,11 @@ class ProposalPromptSerializer(serializers.ModelSerializer):
             "text",
             "selected",
         )
+
+    def create(self, validated_data):
+        request = self.context.get('request')
+        if request:
+            instance = ProposalPrompt.objects.ceate(**validated_data, user=request.user)
+            return instance
+
+
