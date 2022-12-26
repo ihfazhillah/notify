@@ -16,7 +16,7 @@ class ProposalPromptSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         request = self.context.get('request')
         if request:
-            instance = ProposalPrompt.objects.ceate(**validated_data, user=request.user)
+            instance = ProposalPrompt.objects.create(**validated_data, user=request.user)
             return instance
 
 
