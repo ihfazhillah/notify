@@ -17,6 +17,13 @@ class ProposalPromptSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         if request:
             instance = ProposalPrompt.objects.create(**validated_data, user=request.user)
+
+            if instance.selected:
+                # make another not selected
+                ProposalPrompt.objects.filter(
+                    user=request.user
+                ).exclude(pk=instance.id).update(selected=False)
+
             return instance
 
 
