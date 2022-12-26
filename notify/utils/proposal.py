@@ -32,7 +32,7 @@ def generate_proposal(item_id: int, user_id: int) -> str:
     response = openai.Completion.create(
         model="text-davinci-003",
         prompt=prompt,
-        temperature=0.7,
+        temperature=0.8,
         max_tokens=max_tokens,
         top_p=1,
         frequency_penalty=0,
