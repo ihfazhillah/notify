@@ -73,7 +73,8 @@ class SimpleItemSerializer(serializers.ModelSerializer):
             "title",
             "budget",
             "hourly_range",
-            "accessed"
+            "accessed",
+            "published"
         )
 
     def get_budget(self, obj):
