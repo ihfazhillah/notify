@@ -2,6 +2,8 @@ import datetime
 import html
 import re
 
+from django.utils import timezone
+
 from notify.feed.models import Tag, Item
 import feedparser
 
@@ -18,12 +20,14 @@ def parse(tag: Tag):
     new_entries = []
 
     for entry in resp.entries:
+        published = datetime.datetime(*entry.published_parsed[:7])
+        published = published.replace(tzinfo=timezone.get_current_timezone())
         item, created = Item.objects.get_or_create(
             guid=entry.guid,
             defaults={
                 "title": entry.title,
                 "content": entry.summary,
-                "published": datetime.datetime(*entry.published_parsed[:7])
+                "published": published,
             }
         )
 
