@@ -21,7 +21,7 @@ def parse(tag: Tag):
 
     for entry in resp.entries:
         published = datetime.datetime(*entry.published_parsed[:7])
-        published = published.replace(tzinfo=timezone.get_current_timezone())
+        published = published.replace(tzinfo=timezone.utc)
         item, created = Item.objects.get_or_create(
             guid=entry.guid,
             defaults={
