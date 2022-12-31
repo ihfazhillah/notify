@@ -6,7 +6,6 @@ from django.db.models import JSONField
 from model_utils.models import TimeStampedModel
 
 from notify.users.models import User
-from notify.utils.proposal import gpt3_openai
 
 
 class ProposalPrompt(TimeStampedModel):
@@ -49,6 +48,7 @@ class GeneralPromptRequest(TimeStampedModel):
     response = JSONField(null=True, blank=True)
 
     def process(self):
+        from notify.utils.proposal import gpt3_openai
         start = datetime.datetime.now()
         prompt = f"{self.prompt.text}\n{self.additional_body}"
         try:
