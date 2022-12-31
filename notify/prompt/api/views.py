@@ -2,12 +2,13 @@ import random
 
 from django.db.models import QuerySet
 from rest_framework import mixins
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from notify.feed.models import UpworkItem
-from notify.prompt.api.serializers import ProposalPromptSerializer
+from notify.prompt.api.serializers import ProposalPromptSerializer, RequestPromptBody
 from notify.prompt.models import ProposalPrompt
 from notify.utils.proposal import generate_raw_proposal
 
@@ -64,3 +65,13 @@ class ProposalPromptViewSet(
             "jobDesc": upwork_item.description,
             "proposal": proposal
         })
+
+
+@api_view(["POST"])
+def request_prompt(request: Request) -> Response:
+    serializer = RequestPromptBody(data=request.data, context={"user": request.user})
+    serializer.is_valid(raise_exception=True)
+    instance = serializer.save()
+    instance.process()
+    instance.refresh_from_db()
+    return Response(RequestPromptBody(instance=instance).data)

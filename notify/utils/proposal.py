@@ -30,7 +30,11 @@ def generate_proposal(item_id: int, user_id: int) -> str:
 
 def generate_raw_proposal(prompt, job_desc):
     prompt += f"[{job_desc}]"
+    response = gpt3_openai(prompt)
+    return response.choices[0].text
 
+
+def gpt3_openai(prompt):
     max_tokens = 4097 - (len(prompt) + 3)
 
     response = openai.Completion.create(
@@ -43,4 +47,4 @@ def generate_raw_proposal(prompt, job_desc):
         presence_penalty=0
     )
 
-    return response.choices[0].text
+    return response

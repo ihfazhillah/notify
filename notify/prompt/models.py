@@ -1,7 +1,12 @@
+import datetime
+import traceback
+
 from django.db import models
+from django.db.models import JSONField
 from model_utils.models import TimeStampedModel
 
 from notify.users.models import User
+from notify.utils.proposal import gpt3_openai
 
 
 class ProposalPrompt(TimeStampedModel):
@@ -28,3 +33,31 @@ class GeneralPrompt(TimeStampedModel):
 
     def __str__(self):
         return self.prompt_type
+
+
+class GeneralPromptRequest(TimeStampedModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="prompt_requests")
+    prompt = models.ForeignKey(
+        GeneralPrompt,
+        on_delete=models.CASCADE,
+        related_name="requests"
+    )
+    additional_body = models.TextField()
+
+    duration = models.DurationField(null=True, blank=True)
+    error = models.TextField(null=True, blank=True)
+    response = JSONField(null=True, blank=True)
+
+    def process(self):
+        start = datetime.datetime.now()
+        prompt = f"{self.prompt.text}\n{self.additional_body}"
+        try:
+            response = gpt3_openai(prompt)
+            self.response = response
+        except Exception as e:
+            # for now just record the error
+            self.error = traceback.format_exc()
+
+        end = datetime.datetime.now()
+        self.duration = end - start
+        self.save()
