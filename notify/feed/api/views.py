@@ -74,7 +74,7 @@ class ItemViewSet(ReadOnlyModelViewSet):
             user=self.request.user,
             item=instance
         )
-        serializer = MyProposalBodySerializer(data=request.data)
+        serializer = MyProposalBodySerializer(instance=proposal, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
