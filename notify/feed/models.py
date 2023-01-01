@@ -70,7 +70,7 @@ class ProposalExample(TimeStampedModel):
 
 
 class MyProposal(TimeStampedModel):
-    item = models.ForeignKey(UpworkItem, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
     user = models.ForeignKey(
         get_user_model(),
         on_delete=models.CASCADE
