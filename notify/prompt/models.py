@@ -50,7 +50,7 @@ class GeneralPromptRequest(TimeStampedModel):
     def process(self):
         from notify.utils.proposal import gpt3_openai
         start = datetime.datetime.now()
-        prompt = f"{self.prompt.text}\n{self.additional_body}"
+        prompt = f"{self.prompt.text}\n{self.additional_body}\n\n"
         try:
             response = gpt3_openai(prompt)
             self.response = response

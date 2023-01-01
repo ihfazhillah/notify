@@ -67,3 +67,12 @@ class UpworkItem(TimeStampedModel):
 class ProposalExample(TimeStampedModel):
     text = models.TextField()
     item = models.OneToOneField(Item, related_name="proposal_example", on_delete=models.CASCADE)
+
+
+class MyProposal(TimeStampedModel):
+    item = models.ForeignKey(UpworkItem, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        get_user_model(),
+        on_delete=models.CASCADE
+    )
+    text = models.TextField()

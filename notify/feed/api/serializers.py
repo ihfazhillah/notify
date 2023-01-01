@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from notify.feed.models import Item, Tag
+from notify.feed.models import Item, Tag, MyProposal
 from notify.feed.util import parse_upwork_feed
 
 
@@ -87,3 +87,18 @@ class SimpleItemSerializer(serializers.ModelSerializer):
 
     def get_accessed(self, obj):
         return obj.accessed
+
+
+class MyProposalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MyProposal
+        fields = (
+            "pk",
+            "text"
+        )
+
+
+class MyProposalBodySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MyProposal
+        fields = ("text",)

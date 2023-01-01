@@ -6,8 +6,9 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from notify.feed.api.serializers import ItemSerializer, SimpleItemSerializer
-from notify.feed.models import Item, ItemAccess, ProposalExample
+from notify.feed.api.serializers import ItemSerializer, SimpleItemSerializer, MyProposalSerializer, \
+    MyProposalBodySerializer
+from notify.feed.models import Item, ItemAccess, ProposalExample, MyProposal
 from notify.utils.proposal import generate_proposal
 
 
@@ -54,4 +55,34 @@ class ItemViewSet(ReadOnlyModelViewSet):
             item=instance, defaults={"text": proposal}
         )
         return Response({"proposal": proposal})
+
+    @action(detail=True, methods=["GET"])
+    def my_proposal(self, request, pk):
+        instance = self.get_object()
+        proposal, _ = MyProposal.objects.get_or_create(
+            user=self.request.user,
+            item=instance
+        )
+        return Response(
+            MyProposalSerializer(instance=proposal).data
+        )
+
+    @action(detail=True, methods=["POST"])
+    def update_my_proposal(self, request, pk):
+        instance = self.get_object()
+        proposal, _ = MyProposal.objects.get_or_create(
+            user=self.request.user,
+            item=instance
+        )
+        serializer = MyProposalBodySerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        proposal.refresh_from_db()
+
+        return Response(
+            MyProposalSerializer(instance=proposal).data
+        )
+
+
 
