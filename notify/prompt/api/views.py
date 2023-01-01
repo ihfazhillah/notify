@@ -69,7 +69,7 @@ class ProposalPromptViewSet(
 
 @api_view(["POST"])
 def request_prompt(request: Request) -> Response:
-    serializer = RequestPromptBody(data=request.data, context={"user": request.user})
+    serializer = RequestPromptBody(data=request.data, context={"request": request})
     serializer.is_valid(raise_exception=True)
     instance = serializer.save()
     instance.process()
