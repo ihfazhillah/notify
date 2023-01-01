@@ -75,4 +75,4 @@ class MyProposal(TimeStampedModel):
         get_user_model(),
         on_delete=models.CASCADE
     )
-    text = models.TextField()
+    text = models.TextField(default="", blank=True)
