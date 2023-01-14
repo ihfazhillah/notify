@@ -14,7 +14,7 @@ def parse(tag: Tag):
     :return: new entries list. If nothing, just response an empty list
     """
 
-    resp = feedparser.parse(tag.url)
+    resp = feedparser.parse(tag.url, sanitize_html=True)
     resp.entries.reverse()
 
     new_entries = []
